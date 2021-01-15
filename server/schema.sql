@@ -5,12 +5,14 @@ USE chat;
 CREATE TABLE users (
   userid INT NOT NULL AUTO_INCREMENT,
   username CHAR(20),
-  PRIMARY KEY (userid)
+  PRIMARY KEY (userid),
+  UNIQUE (username)
 );
 CREATE TABLE rooms (
   roomid INT NOT NULL AUTO_INCREMENT,
   roomname CHAR(20),
-  PRIMARY KEY (roomid)
+  PRIMARY KEY (roomid),
+  UNIQUE (roomname)
 );
 CREATE TABLE messages (
   messageid INT NOT NULL AUTO_INCREMENT,

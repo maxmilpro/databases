@@ -17,14 +17,32 @@ describe('Persistent Node Chat Server', function() {
     dbConnection.connect();
 
     var tablename = 'messages'; // TODO: fill this out
+    var usertable = 'users';
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
     dbConnection.query('truncate ' + tablename, done);
+    // dbConnection.query('delete from users ', done);
   });
 
   afterEach(function() {
     dbConnection.end();
+  });
+
+  xit('Should insert a new user to the database', function(done) {
+    request({
+      method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/users',
+      json: { username: 'Melmax'}
+    }, function () {
+      var queryString = 'SELECT * FROM users';
+      var queryArgs = [];
+      dbConnection.query(queryString, queryArgs, function(err, results) {
+        expect(results.length).to.equal(1);
+        expect(results[0].username).to.equal('Melmax');
+        done();
+      });
+    });
   });
 
   it('Should insert posted messages to the DB', function(done) {
@@ -86,8 +104,8 @@ describe('Persistent Node Chat Server', function() {
       // the message we just inserted:
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
         var messageLog = JSON.parse(body);
-        expect(messageLog[0].text).to.equal('Men like you can never change!');
-        expect(messageLog[0].roomname).to.equal(1);
+        expect(messageLog[0].messagetext).to.equal('Men like you can never change!');
+        expect(messageLog[0].roomname).to.equal('lobby');
         done();
       });
     });
