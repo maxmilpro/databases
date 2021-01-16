@@ -91,7 +91,7 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-    var queryString = 'insert into messages values (1, "Men like you can never change!", 1, 1)';
+    var queryString = 'insert into messages values (2, "Men like you can never change!", 1, 1)';
     var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave
@@ -105,9 +105,25 @@ describe('Persistent Node Chat Server', function() {
       request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
         var messageLog = JSON.parse(body);
         expect(messageLog[0].messagetext).to.equal('Men like you can never change!');
-        expect(messageLog[0].roomname).to.equal('lobby');
+        expect(messageLog[0].roomname).to.equal('Hello');
         done();
       });
+    });
+  });
+
+  it('Should get a list of users from the DB', function(done) {
+    request('http://127.0.0.1:3000/classes/users', function(error, response, body) {
+      var usersList = JSON.parse(body);
+      expect(usersList[0].username).to.equal('Valjean');
+      done();
+    });
+  });
+
+  it('Should get a list of rooms from the DB', function(done) {
+    request('http://127.0.0.1:3000/classes/rooms', function(error, response, body) {
+      var roomsList = JSON.parse(body);
+      expect(roomsList[0].roomname).to.equal('Hello');
+      done();
     });
   });
 });

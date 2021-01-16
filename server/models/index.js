@@ -14,9 +14,7 @@ module.exports = {
       });
 
     }, // a function which produces all the messages
-    post: function ({message, username, roomname}) { // a function which can be used to insert a message into the database
-      // query the users table to find the userid for the provided username
-      // 'INSERT INTO messages (messagetext, userid, roomid) VALUES (message, SELECT userid from users where username = ?, SELECT roomid from rooms where roomname = ?)
+    post: function ({message, username, roomname}) {
       var queryString = 'INSERT INTO messages (messagetext, userid, roomid) VALUES (?, (SELECT userid from users where username = ?), (SELECT roomid from rooms where roomname = ?))';
       var queryArgs = [message, username, roomname];
       db.connection.query(queryString, queryArgs, (err, results) => {
@@ -31,7 +29,16 @@ module.exports = {
 
   users: {
     // Ditto as above.
-    get: function () {},
+    get: function (cb) {
+      db.connection.query('SELECT username FROM users', [], (err, results) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('Retrieved the users: ', results);
+          cb(results);
+        }
+      });
+    },
     post: function (username) {
       var queryString = 'INSERT into users (username) VALUES (?)';
       var queryArgs = [username];
@@ -47,7 +54,16 @@ module.exports = {
 
   rooms: {
     // Ditto as above.
-    get: function () {},
+    get: function (cb) {
+      db.connection.query('SELECT roomname FROM rooms', [], (err, results) => {
+        if (err) {
+          throw err;
+        } else {
+          console.log('Retrieved the rooms: ', results);
+          cb(results);
+        }
+      });
+    },
     post: function (roomname) {
       var queryString = 'INSERT into rooms (roomname) VALUES (?)';
       var queryArgs = [roomname];

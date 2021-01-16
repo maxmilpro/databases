@@ -16,7 +16,11 @@ module.exports = {
 
   users: {
     // Ditto as above
-    get: function (req, res) {},
+    get: function (req, res) {
+      models.users.get((users) => {
+        res.send(users);
+      });
+    },
     post: function (req, res) {
       models.users.post(req.body.username);
       res.end();
@@ -25,7 +29,11 @@ module.exports = {
 
   rooms: {
     // Ditto as above
-    get: function (req, res) {},
+    get: function (req, res) {
+      models.rooms.get((rooms) => {
+        res.send(rooms);
+      });
+    },
     post: function (req, res) {
       models.rooms.post(req.body.roomname);
       res.end();
