@@ -5,7 +5,8 @@ var Messages = {
     Parse.readAll((data) => {
       console.log('chatterbox: Messages retrieved');
       MessagesView.$chats.empty();
-      for (message of data.results) {
+      console.log('data: ', data);
+      for (message of data) {
         MessagesView.renderMessage(message);
       }
     });

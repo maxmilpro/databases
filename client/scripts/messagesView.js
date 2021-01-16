@@ -12,7 +12,7 @@ var MessagesView = {
 
   renderMessage: function(message) {
     // if there is a username and text in the message
-    if (message['username'] !== undefined && message['text'] !== undefined) {
+    if (message['username'] !== undefined && message['messagetext'] !== undefined) {
       var selectedRoom = RoomsView.$select.val() || 'lobby';
       // if the message's room is equal to the selected room
       if (message.roomname === selectedRoom) {

@@ -4,7 +4,7 @@ var Rooms = {
     Parse.readAll((data) => {
       // call MessageView.render on the data
       console.log('chatterbox: Rooms retrieved');
-      for (message of data.results) {
+      for (message of data ) {
         if (message.roomname && !_.contains(Rooms.list, message.roomname)) {
           Rooms.list.push(message.roomname);
         }
