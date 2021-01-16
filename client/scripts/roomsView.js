@@ -29,7 +29,7 @@ var RoomsView = {
   },
 
   handleAddRoom: function() {
-    Rooms.add();
+    Rooms.addRoom(RoomsView.$addRoom.val());
   }
 };
 

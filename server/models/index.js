@@ -15,6 +15,8 @@ module.exports = {
 
     }, // a function which produces all the messages
     post: function ({message, username, roomname}) {
+      console.log('message, username, roomname: ');
+      console.log(message, username, roomname);
       var queryString = 'INSERT INTO messages (messagetext, userid, roomid) VALUES (?, (SELECT userid from users where username = ?), (SELECT roomid from rooms where roomname = ?))';
       var queryArgs = [message, username, roomname];
       db.connection.query(queryString, queryArgs, (err, results) => {
@@ -44,7 +46,7 @@ module.exports = {
       var queryArgs = [username];
       db.connection.query(queryString, queryArgs, (err, results) => {
         if (err) {
-          throw err;
+          console.log('Username already exists! Welcome back.');
         } else {
           console.log('User added!');
         }
@@ -69,7 +71,7 @@ module.exports = {
       var queryArgs = [roomname];
       db.connection.query(queryString, queryArgs, (err, results) => {
         if (err) {
-          throw err;
+          console.log('This room already exists! Why not visit?');
         } else {
           console.log('Room added!');
         }
