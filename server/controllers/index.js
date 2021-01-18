@@ -1,4 +1,5 @@
 var models = require('../models');
+var {User, Room, Message} = require('../db');
 
 module.exports = {
   messages: {

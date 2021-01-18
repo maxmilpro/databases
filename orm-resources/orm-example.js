@@ -4,13 +4,18 @@
  */
 
 var Sequelize = require('sequelize');
-var db = new Sequelize('chat', 'root', '');
+var sequelize = new Sequelize('chat', 'root', '', {
+  dialect: 'mysql',
+  define: {
+    timestamps: false
+  }
+});
 /* TODO this constructor takes the database name, username, then password.
  * Modify the arguments if you need to */
 
 /* first define the data structure by giving property names and datatypes
  * See http://sequelizejs.com for other datatypes you can use besides STRING. */
-var User = db.define('users', {
+var User = sequelize.define('user', {
   userid: {
     type: Sequelize.INTEGER,
     primaryKey: true
@@ -18,7 +23,7 @@ var User = db.define('users', {
   username: Sequelize.STRING
 });
 
-var Room = db.define('rooms', {
+var Room = sequelize.define('room', {
   roomid: {
     type: Sequelize.INTEGER,
     primaryKey: true
@@ -26,15 +31,16 @@ var Room = db.define('rooms', {
   roomname: Sequelize.STRING
 });
 
-var Message = db.define('messages', {
+var Message = sequelize.define('message', {
   messageid: {
     type: Sequelize.INTEGER,
     primaryKey: true
   },
-  userid: Sequelize.INTEGER,
   messagetext: Sequelize.STRING,
-  roomid: Sequelize.INTEGER
 });
+
+User.hasOne(Message/*, {as: 'userid'}*/);
+Room.hasOne(Message/*, {as: 'roomid'}*/);
 
 /* Sequelize comes with built in support for promises
  * making it easy to chain asynchronous operations together */
@@ -51,10 +57,10 @@ User.sync()
     users.forEach(function(user) {
       console.log(user.username + ' exists');
     });
-    db.close();
+    sequelize.close();
   })
   .catch(function(err) {
     // Handle any error in the chain
     console.error(err);
-    db.close();
+    sequelize.close();
   });

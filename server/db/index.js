@@ -1,7 +1,16 @@
 var Sequelize = require('sequelize');
-var db = new Sequalize('chat', 'root', '');
+var sequelize = new Sequelize('chat', 'root', '', {
+  dialect: 'mysql',
+  define: {
+    timestamps: false
+  }
+});
+/* TODO this constructor takes the database name, username, then password.
+ * Modify the arguments if you need to */
 
-var User = db.define('users', {
+/* first define the data structure by giving property names and datatypes
+ * See http://sequelizejs.com for other datatypes you can use besides STRING. */
+var User = sequelize.define('user', {
   userid: {
     type: Sequelize.INTEGER,
     primaryKey: true
@@ -9,7 +18,7 @@ var User = db.define('users', {
   username: Sequelize.STRING
 });
 
-var Room = db.define('rooms', {
+var Room = sequelize.define('room', {
   roomid: {
     type: Sequelize.INTEGER,
     primaryKey: true
@@ -17,21 +26,16 @@ var Room = db.define('rooms', {
   roomname: Sequelize.STRING
 });
 
-var Message = db.define('messages', {
+var Message = sequelize.define('message', {
   messageid: {
     type: Sequelize.INTEGER,
     primaryKey: true
   },
   messagetext: Sequelize.STRING,
-  // userid: Sequelize.INTEGER,
-  // roomid: Sequelize.INTEGER
 });
 
-User.hasMany(Message);
-Message.belongsTo(User);
-
-Room.hasMany(Message);
-Message.belongsTo(Room);
+User.hasOne(Message/*, {as: 'userid'}*/);
+Room.hasOne(Message/*, {as: 'roomid'}*/);
 
 User.sync();
 Room.sync();
